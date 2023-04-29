@@ -14,10 +14,24 @@ function App() {
     .catch(error => console.log(error));
   }, []);
 
+  function handleAddQuestion(formData){
+    fetch (' http://localhost:4000/questions',{
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    }) 
+    .then((response) => response.json())
+    .then((data) => setQuestions([...questions,data]));
+    setPage("List");
+     }
+  
+
   return (
     <main>
       <AdminNavBar onChangePage={setPage} />
-      {page === "Form" ? <QuestionForm /> : <QuestionList questions={questions} />}
+      {page === "Form" ? <QuestionForm onAddQuestion={handleAddQuestion}/> : <QuestionList questions={questions} />}
     </main>
   );
 }
