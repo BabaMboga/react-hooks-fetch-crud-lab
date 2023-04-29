@@ -20,6 +20,32 @@ function QuestionForm(props) {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(formData);
+    const response = fetch("http://localhost:4000/questions",{
+      method:"POST",
+      headers:{
+        "Content-type": "application/json"
+      },
+      body:JSON.stringify({
+        prompt: formData.prompt,
+        answers:[
+          formData.answer1,
+          formData.answer2,
+          formData.answer3,
+          formData.answer4,
+        ],
+        correctIndex: formData.correctIndex,
+      }),
+    });
+    const data = response.json();
+    onAddQuestion(data);
+    setFormData({
+      prompt: "",
+    answer1: "",
+    answer2: "",
+    answer3: "",
+    answer4: "",
+    correctIndex: 0,
+    });
   }
 
   return (
@@ -40,6 +66,7 @@ function QuestionForm(props) {
           <input
             type="text"
             name="answer1"
+            id="0"
             value={formData.answer1}
             onChange={handleChange}
           />
